@@ -1,17 +1,69 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './style.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import pizzaData from "./data";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+function App() {
+  return (
+    <>
+      <Header />
+      <Menu />
+      <Footer />
+    </>
+  );
+}
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+function Header() {
+  return (
+    <header>
+      <h1>Teck Hong's Pizza</h1>
+      <p>Authentic Italian Cuisine, all from our stone oven </p>
+    </header>
+  );
+}
+
+function Footer() {
+  const currentHour = new Date().getHours();
+  const isOpen = currentHour >= 10 && currentHour <= 22;
+
+  return (
+    <footer>
+      {isOpen ? <Order /> : <p>"We 're currently clossed"</p>}
+    </footer>
+  );
+}
+
+function Order() {
+  return (
+    <>
+      <p>We're currently open</p>
+      <button>Order</button>
+    </>
+  );
+}
+
+function Menu() {
+  return (
+    <div className='menubox'>
+      {pizzaData.map((pizza) => (
+        <Pizza
+          key={pizza.name} {...pizza}/>
+      ))}
+    </div>
+  );
+}
+
+function Pizza({ name, ingredients, price, photoName, soldOut }) {
+  return (
+    <div className="pizza">
+      <img src={photoName} alt={name} className="pizza-image" />
+      <h2>{name}</h2>
+      <p>{ingredients}</p>
+      <p>${price.toFixed(2)}</p>
+      {soldOut && <p className="sold-out">Sold Out</p>}
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
